@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"E:\\\\dev\\\\src\\\\Tic-Tac-Toe\\\\api\" -Force)",
+      "Bash(Select-Object Name, FullName)",
+      "Bash(npm run *)"
+    ]
+  }
+}

@@ -1,27 +1,32 @@
-<app-theme-controller-sun-moon></app-theme-controller-sun-moon>
-<div class="hero min-h-screen bg-[var(--color-light-green)]">
-    <div class="hero-content text-center">
-        <div class="max-w-md">
-            <h1 class="text-7xl font-black font-monospace text-[var(--color-x)]">Tic Tac Toe</h1>
+<div class="lobby">
+    <div class="hero min-h-screen bg-[var(--color-light-green)] relative">
+        <div class="hero-content text-center">
+            <div class="max-w-md">
+                <h1 class="text-7xl font-black font-monospace text-[var(--color-x)]">Tic Tac Toe</h1>
 
-            <app-static-board></app-static-board>
+                <app-static-board></app-static-board>
 
-            <div class="divider"></div>
+                <div class="divider"></div>
 
-            <div class="flex flex-col">
-                <div>
-                    <button class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] m-2 min-w-50">Play vs CPU</button>
-                    <button class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] m-2 min-w-50">Local Multiplayer</button>
-                </div>
-                <div>
-                    <button class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] m-2 min-w-50">Online Multiplayer</button>
-                    <button class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] m-2 min-w-50">Play with a Friend</button>
+                <div class="flex flex-col">
+                    <div>
+                        <button
+                            class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] m-2 min-w-50">Play
+                            vs CPU</button>
+                        <button
+                            class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] m-2 min-w-50">Local
+                            Multiplayer</button>
+                    </div>
+                    <div>
+                        <button
+                            class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] m-2 min-w-50">Online
+                            Multiplayer</button>
+                        <button
+                            class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] m-2 min-w-50">Play
+                            with a Friend</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="flex min-h-screen md:items-center md:justify-center md:py-8">
-    <div class="bg-accent p-2 w-full min-h-screen md:w-150 md:h-170 md:min-h-0 md:rounded-xl"></div>
 </div>

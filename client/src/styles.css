@@ -1,4 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@900&display=swap');
 @import 'tailwindcss';
 @plugin "daisyui";
+
+:root {
+  --color-x: #3d3535;
+  --color-o: #f5f0e8;
+  --color-light-green: #2bbfa4;
+  --color-dark-green: #25a991;
+}

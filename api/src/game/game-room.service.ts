@@ -111,19 +111,33 @@ export class GameRoomService {
     throw new Error('not implemneted yet!');
   }
 
-  removeBySocket(socketId: string) {
+  getCodeBySocket(socketId: string): string | undefined {
+    return this.socketToCode.get(socketId);
+  }
+
+  removeBySocket(
+    socketId: string,
+  ): { code: string; opponentSocketId?: string } | null {
     const code = this.socketToCode.get(socketId);
 
-    if (!code) return;
+    if (!code) return null;
 
     const room = this.rooms.get(code);
 
-    if (room) {
-      if (room.players.X) this.socketToCode.delete(room.players.X);
-      if (room.players.O) this.socketToCode.delete(room.players.O);
-
-      this.rooms.delete(code);
+    if (!room) {
+      this.socketToCode.delete(socketId);
+      return null;
     }
+
+    const opponentSocketId =
+      room.players.X === socketId ? room.players.O : room.players.X;
+
+    if (room.players.X) this.socketToCode.delete(room.players.X);
+    if (room.players.O) this.socketToCode.delete(room.players.O);
+
+    this.rooms.delete(code);
+
+    return { code, opponentSocketId };
   }
 
   private checkWin(

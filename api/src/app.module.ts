@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RedisModule } from './redis/redis.module';
+import { GameModule } from './game/game.module';
 import configurations from './config/configurations';
 
 @Module({
@@ -30,6 +31,7 @@ import configurations from './config/configurations';
       }),
     }),
     RedisModule,
+    GameModule,
   ],
   controllers: [AppController],
   providers: [

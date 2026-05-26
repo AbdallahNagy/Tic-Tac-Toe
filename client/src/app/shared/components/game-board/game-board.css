@@ -1,0 +1,88 @@
+.board.is-disabled {
+  opacity: 0.85;
+}
+
+.cell {
+  position: relative;
+  overflow: hidden;
+}
+
+.cell--clickable:hover {
+  background-color: color-mix(in srgb, var(--color-light-green) 80%, white);
+  transform: translateY(-1px);
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+
+.cell--winning {
+  animation: winning-pulse 1.2s ease-in-out infinite;
+  background-color: color-mix(in srgb, var(--color-light-green) 70%, var(--color-o));
+}
+
+@keyframes winning-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-o) 40%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--color-o) 0%, transparent);
+  }
+}
+
+.mark {
+  display: inline-block;
+  transform-origin: center;
+  animation: mark-pop 280ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.mark--x {
+  animation-name: mark-pop, mark-x-tilt;
+  animation-duration: 280ms, 600ms;
+  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1), ease-out;
+  animation-fill-mode: both, both;
+}
+
+.mark--o {
+  animation-name: mark-pop, mark-o-spin;
+  animation-duration: 280ms, 500ms;
+  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1), ease-out;
+  animation-fill-mode: both, both;
+}
+
+@keyframes mark-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes mark-x-tilt {
+  0% {
+    transform: rotate(-12deg) scale(0.2);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes mark-o-spin {
+  0% {
+    transform: rotate(-90deg) scale(0.2);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark,
+  .cell--winning {
+    animation: none !important;
+  }
+}

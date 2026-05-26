@@ -12,7 +12,7 @@ export const routes: Routes = [
         component: Lobby
     },
     {
-        path: 'board',
-        loadComponent: () => import('./features/board/board').then(m => m.Board)
+        path: 'game',
+        loadComponent: () => import('./features/game/game').then(m => m.Game)
     }
 ];

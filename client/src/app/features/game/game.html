@@ -1,0 +1,134 @@
+<div
+  class="hero min-h-screen bg-[var(--color-light-green)]"
+>
+  <div class="hero-content text-center">
+    <div class="max-w-md w-full">
+      <h1 class="text-6xl font-black font-monospace text-[var(--color-x)] mb-2">Tic Tac Toe</h1>
+      <p class="text-[var(--color-x)]/70 mb-6">Play with a friend</p>
+
+      @switch (screen()) {
+        @case ('menu') {
+          <div class="flex flex-col gap-3 items-center">
+            <button
+              class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] min-w-60"
+              (click)="onCreate()"
+            >
+              Create Room
+            </button>
+            <button
+              class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] min-w-60"
+              (click)="goJoin()"
+            >
+              Join Room
+            </button>
+            <a
+              routerLink="/lobby"
+              class="link text-[var(--color-x)] mt-2"
+              >Back to lobby</a
+            >
+          </div>
+        }
+
+        @case ('create') {
+          <div class="flex flex-col gap-3 items-center">
+            <p class="text-[var(--color-x)]">Share this code with your friend:</p>
+            <div
+              class="text-5xl font-black tracking-widest bg-[var(--color-o)] text-[var(--color-x)] px-6 py-3 rounded-lg shadow-md"
+            >
+              {{ code() }}
+            </div>
+            <button
+              class="btn btn-sm bg-[var(--color-dark-green)] text-[var(--color-o)] border-none"
+              (click)="copyCode()"
+            >
+              Copy code
+            </button>
+            <p class="text-[var(--color-x)]/80 mt-3 animate-pulse">
+              Waiting for opponent to join…
+            </p>
+            <button
+              class="link text-[var(--color-x)] mt-2"
+              (click)="goMenu()"
+            >
+              Cancel
+            </button>
+          </div>
+        }
+
+        @case ('join') {
+          <div class="flex flex-col gap-3 items-center">
+            <input
+              type="text"
+              placeholder="Enter room code"
+              class="input input-bordered w-full max-w-xs uppercase tracking-widest text-center text-2xl font-black"
+              [ngModel]="joinInput()"
+              (ngModelChange)="joinInput.set($event)"
+              maxlength="6"
+            />
+            @if (errorMessage()) {
+              <p class="text-red-600 text-sm">{{ errorMessage() }}</p>
+            }
+            <button
+              class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] min-w-60"
+              (click)="onJoin()"
+            >
+              Join
+            </button>
+            <button
+              class="link text-[var(--color-x)] mt-2"
+              (click)="goMenu()"
+            >
+              Back
+            </button>
+          </div>
+        }
+
+        @case ('playing') {
+          <div class="flex flex-col gap-3 items-center">
+            <div class="flex justify-between w-full text-[var(--color-x)] text-sm mb-1">
+              <span>Room: <strong>{{ code() }}</strong></span>
+              <span>You: <strong>{{ you() }}</strong></span>
+            </div>
+
+            <p
+              class="text-2xl font-bold text-[var(--color-x)] min-h-8 transition-all"
+              [class.text-[var(--color-o)]]="!!resultBanner()"
+            >
+              {{ turnLabel() }}
+            </p>
+
+            <app-game-board
+              [board]="board()"
+              [winningLine]="winningLine()"
+              [disabled]="!isMyTurn() || !!resultBanner() || !!opponentLeftBanner()"
+              (cellClick)="onCellClick($event)"
+            />
+
+            @if (opponentLeftBanner()) {
+              <div
+                class="alert bg-[var(--color-x)] text-[var(--color-o)] border-none mt-3"
+              >
+                <span>{{ opponentLeftBanner() }}</span>
+              </div>
+              <a
+                routerLink="/lobby"
+                class="link text-[var(--color-x)] mt-1"
+                >Back to lobby</a
+              >
+            } @else if (resultBanner()) {
+              <a
+                routerLink="/lobby"
+                class="link text-[var(--color-x)] mt-1"
+                >Back to lobby</a
+              >
+            }
+          </div>
+        }
+      }
+
+      @if (errorMessage() && screen() !== 'join') {
+        <p class="text-red-600 text-sm mt-3">{{ errorMessage() }}</p>
+      }
+    </div>
+  </div>
+</div>

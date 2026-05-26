@@ -30,7 +30,7 @@ export class GameGateway implements OnGatewayDisconnect {
     try {
       const { code, you } = this.gameRoomService.createRoom(socket.id);
       void socket.join(code);
-      return { event: 'room:created', data: { code, you } };
+      return { ok: true as const, code, you };
     } catch (err) {
       return this.emitError(socket, err);
     }
@@ -50,7 +50,7 @@ export class GameGateway implements OnGatewayDisconnect {
       void socket.join(code);
 
       this.server.to(code).emit('game:start', { code });
-      return { event: 'room:joined', data: { code, you } };
+      return { ok: true as const, code, you };
     } catch (err) {
       return this.emitError(socket, err);
     }
@@ -108,6 +108,6 @@ export class GameGateway implements OnGatewayDisconnect {
           : 'unknown error';
     this.logger.warn(`socket=${socket.id} error=${message}`);
     socket.emit('error', { message });
-    return { event: 'error', data: { message } };
+    return { ok: false as const, message };
   }
 }

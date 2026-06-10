@@ -29,6 +29,16 @@ export interface GameOver {
   winningLine?: [number, number, number];
 }
 
+export interface RematchUpdate {
+  X: boolean;
+  O: boolean;
+}
+
+export interface GameRestart {
+  board: Board;
+  currentPlayer: Player;
+}
+
 export interface OpponentLeft {
   code: string;
 }

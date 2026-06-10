@@ -75,6 +75,21 @@ export class Game implements OnDestroy {
     this.socket.opponentLeft() ? 'Your opponent left the room' : null,
   );
 
+  readonly iRequestedRematch = computed<boolean>(() => {
+    const me = this.you();
+    return !!me && !!this.socket.rematchState()?.[me];
+  });
+
+  readonly rematchStatus = computed<string | null>(() => {
+    const state = this.socket.rematchState();
+    const me = this.you();
+    if (!state || !me) return null;
+    const opponent = me === 'X' ? 'O' : 'X';
+    if (state[me]) return 'Waiting for opponent to accept…';
+    if (state[opponent]) return 'Opponent wants a rematch!';
+    return null;
+  });
+
   readonly turnLabel = computed<string>(() => {
     if (this.waitingForOpponent()) return 'Waiting for opponent…';
     if (this.resultBanner()) return this.resultBanner()!;
@@ -115,6 +130,11 @@ export class Game implements OnDestroy {
     if (!this.isMyTurn()) return;
     if (this.socket.gameOver()) return;
     this.socket.makeMove(index);
+  }
+
+  onRematch() {
+    const code = this.code();
+    if (code) this.socket.requestRematch(code);
   }
 
   goJoin() {

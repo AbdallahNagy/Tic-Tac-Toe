@@ -3,9 +3,11 @@ import { io, Socket } from 'socket.io-client';
 import {
   AckResult,
   GameOver,
+  GameRestart,
   GameStart,
   GameState,
   OpponentLeft,
+  RematchUpdate,
   RoomCreated,
   RoomJoined,
   SocketError,
@@ -21,6 +23,7 @@ export class SocketService {
   readonly gameStart = signal<GameStart | null>(null);
   readonly gameState = signal<GameState | null>(null);
   readonly gameOver = signal<GameOver | null>(null);
+  readonly rematchState = signal<RematchUpdate | null>(null);
   readonly opponentLeft = signal<OpponentLeft | null>(null);
   readonly lastError = signal<SocketError | null>(null);
 
@@ -41,6 +44,14 @@ export class SocketService {
       this.gameOver.set(null);
     });
     this.socket.on('game:over', (payload: GameOver) => this.gameOver.set(payload));
+    this.socket.on('game:rematch:update', (payload: RematchUpdate) =>
+      this.rematchState.set(payload),
+    );
+    this.socket.on('game:restart', (payload: GameRestart) => {
+      this.gameState.set({ type: 'state', ...payload });
+      this.gameOver.set(null);
+      this.rematchState.set(null);
+    });
     this.socket.on('opponent:left', (payload: OpponentLeft) => this.opponentLeft.set(payload));
     this.socket.on('error', (payload: SocketError) => this.lastError.set(payload));
 
@@ -73,10 +84,15 @@ export class SocketService {
     this.socket?.emit('game:move', { index });
   }
 
+  requestRematch(code: string): void {
+    this.socket?.emit('game:rematch', { code });
+  }
+
   resetState(): void {
     this.gameStart.set(null);
     this.gameState.set(null);
     this.gameOver.set(null);
+    this.rematchState.set(null);
     this.opponentLeft.set(null);
     this.lastError.set(null);
   }

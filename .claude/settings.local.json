@@ -3,7 +3,12 @@
     "allow": [
       "Skill(superpowers:brainstorming)",
       "Bash(npm run *)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(npx jest *)",
+      "Bash(npx tsc *)",
+      "Bash(git stash *)",
+      "Bash(echo \"===EXIT $?===\")",
+      "Bash(npx ng *)"
     ]
   }
 }

@@ -116,6 +116,16 @@
                 >Back to lobby</a
               >
             } @else if (resultBanner()) {
+              @if (rematchStatus()) {
+                <p class="text-[var(--color-x)] font-semibold mt-2">{{ rematchStatus() }}</p>
+              }
+              <button
+                class="btn bg-[var(--color-x)] text-[var(--color-o)] border-none hover:bg-[var(--color-dark-green)] hover:text-[var(--color-o)] min-w-60 mt-1"
+                [disabled]="iRequestedRematch()"
+                (click)="onRematch()"
+              >
+                Rematch
+              </button>
               <a
                 routerLink="/lobby"
                 class="link text-[var(--color-x)] mt-1"

@@ -85,8 +85,29 @@ export class GameGateway implements OnGatewayDisconnect {
   }
 
   @SubscribeMessage('game:rematch')
-  handleRematch(@ConnectedSocket() socket: Socket) {
-    return this.emitError(socket, 'rematch not implemented yet');
+  handleRematch(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() payload: unknown,
+  ) {
+    const parsed = joinRoomSchema.safeParse(payload);
+    if (!parsed.success) return this.emitError(socket, 'invalid payload');
+
+    const { code } = parsed.data;
+
+    try {
+      const result = this.gameRoomService.requestRematch(code, socket.id);
+
+      if (result.type === 'restart') {
+        this.server.to(code).emit('game:restart', {
+          board: result.board,
+          currentPlayer: result.currentPlayer,
+        });
+      } else {
+        this.server.to(code).emit('game:rematch:update', result.rematch);
+      }
+    } catch (err) {
+      return this.emitError(socket, err);
+    }
   }
 
   handleDisconnect(socket: Socket) {

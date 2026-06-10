@@ -107,8 +107,34 @@ export class GameRoomService {
     };
   }
 
-  requestRematch(code: string, playerSocketId: string) {
-    throw new Error('not implemneted yet!');
+  requestRematch(
+    code: string,
+    playerSocketId: string,
+  ):
+    | { type: 'pending'; rematch: { X: boolean; O: boolean } }
+    | { type: 'restart'; board: Board; currentPlayer: Player } {
+    const room = this.rooms.get(code);
+    if (!room) throw new Error('room not found!');
+
+    if (room.status !== 'over') throw new Error('game is not over!');
+
+    const requestingPlayer = room.players.X === playerSocketId ? 'X' : 'O';
+    room.rematch[requestingPlayer] = true;
+
+    if (!(room.rematch.X && room.rematch.O)) {
+      return { type: 'pending', rematch: { ...room.rematch } };
+    }
+
+    room.board = Array(9).fill(null) as Board;
+    room.currentPlayer = 'X';
+    room.status = 'playing';
+    room.rematch = { X: false, O: false };
+
+    return {
+      type: 'restart',
+      board: room.board,
+      currentPlayer: room.currentPlayer,
+    };
   }
 
   getCodeBySocket(socketId: string): string | undefined {
